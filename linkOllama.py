@@ -1,14 +1,15 @@
-import ollama
+from ollama import Client
+import httpx
 
-client = ollama.Client(host="http://localhost:11434")
-# print("已连接 Ollama:", client)
-# 列举模型
-# print("模型列表:", client.list())
-# 显示模型信息
-# print(client.show('qwen2.5:3b'))
-# 显示那些模型正在运行
-# print(client.ps())
 
-response = client.chat(model="qwen2.5:3b", messages=[
-                       {"role": "user", "content": "你好"}])
-print(response)
+client = Client(
+    host="http://127.0.0.1:11434",
+    transport=httpx.HTTPTransport(retries=0),
+)
+
+resp = client.generate(
+    model="qwen2.5:7b",
+    prompt="你好"
+)
+
+print(resp["response"])
